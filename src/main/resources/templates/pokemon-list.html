@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pokemon List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card-body {
+            max-height: 200px; /* Set the maximum height for the card body */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4 mb-4">Pokemon List</h1>
+
+    <div class="row">
+        <div th:each="pokemon : ${pokemonList}" class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card">
+                <img th:src="${pokemon.url}" class="card-img-top" alt="Pokemon Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${pokemon.name}"></h5>
+                    <p class="card-text">Weight: <span th:text="${pokemon.weight}"></span></p>
+                    <p class="card-text">Abilities:</p>
+                    <ul class="list-unstyled">
+                        <li th:each="ability : ${pokemon.abilities}" th:text="${ability.name}"></li>
+                    </ul>
+                    <p class="card-text">Moves:</p>
+                    <ul class="list-unstyled">
+                        <li th:each="move : ${pokemon.moves}" th:text="${move.name}"></li>
+                    </ul>
+                    <p class="card-text">Types:</p>
+                    <ul class="list-unstyled">
+                        <li th:each="type : ${pokemon.types}" th:text="${type.name}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination buttons -->
+    <div class="col">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:class="${number == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:if="${number > 0}" th:href="@{/pokemon(page=@{${number - 1}},size=${size})}">Previous</a>
+                    <span class="page-link" th:if="${number == 0}">Previous</span>
+                </li>
+                <li class="page-item" th:class="${number + 1 >= count} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/pokemon(page=@{${number + 1}},size=${size})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
